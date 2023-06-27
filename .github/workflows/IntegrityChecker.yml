@@ -17,9 +17,12 @@ jobs:
 
       - name: Check if folder exists
         run: |
-          if [ ! -e ${{ env.TARGET_FOLDER }} ]; then
-            echo "Target folder '${{ env.TARGET_FOLDER }}' does not exist!"
-            exit 1
+          if [ ! -d ${{ env.TARGET_FOLDER }} ]; 
+          then
+          else
+              echo "Folder does not exist"
+              exit 1
+          fi
 
       - name: Generate SHA256 hash
         run: |
