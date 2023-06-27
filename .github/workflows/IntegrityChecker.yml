@@ -24,9 +24,13 @@ jobs:
               exit 1
           fi
 
+      - name: Zip the target folder
+        run: |
+          tar -czf target.tar.gz ${{ env.TARGET_FOLDER }}
+
       - name: Generate SHA256 hash
         run: |
-          echo "SHA256_HASH=$(sha256sum ${{ env.TARGET_FOLDER }} | awk '{ print $1 }')" >> $GITHUB_ENV
+          echo "SHA256_HASH=$(sha256sum target.tar.gz | awk '{ print $1 }')" >> $GITHUB_ENV
 
       - name: Get commit ID (SHA)
         run: |
@@ -34,5 +38,18 @@ jobs:
 
       - name: Print hash and commit ID (SHA)
         run: |
-          echo "SHA256 hash of ${{ env.TARGET_FOLDER }}: $SHA256_HASH"
+          echo "SHA256 hash of zipped ${{ env.TARGET_FOLDER }}: $SHA256_HASH"
           echo "Commit SHA: $COMMIT_SHA"
+
+      # - name: Generate SHA256 hash
+      #   run: |
+      #     echo "SHA256_HASH=$(sha256sum ${{ env.TARGET_FOLDER }} | awk '{ print $1 }')" >> $GITHUB_ENV
+
+      # - name: Get commit ID (SHA)
+      #   run: |
+      #     echo "COMMIT_SHA=$(git rev-parse HEAD)" >> $GITHUB_ENV
+
+      # - name: Print hash and commit ID (SHA)
+      #   run: |
+      #     echo "SHA256 hash of ${{ env.TARGET_FOLDER }}: $SHA256_HASH"
+      #     echo "Commit SHA: $COMMIT_SHA"
