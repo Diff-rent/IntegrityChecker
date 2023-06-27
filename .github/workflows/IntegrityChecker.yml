@@ -18,6 +18,7 @@ jobs:
       - name: Check if folder exists
         run: |
           if [ ! -d ${{ env.TARGET_FOLDER }} ]; then
+              echo "Folder exists"
           else
               echo "Folder does not exist"
               exit 1
