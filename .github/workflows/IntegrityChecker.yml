@@ -1,0 +1,29 @@
+name: Integrity Checker
+
+on:
+  push:
+    branches:
+      - main
+env:
+  TARGET_FOLDER: "test_folder"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Generate SHA256 hash
+        run: |
+          echo "SHA256_HASH=$(sha256sum ${{ env.TARGET_FOLDER }} | awk '{ print $1 }')" >> $GITHUB_ENV
+
+      - name: Get commit ID (SHA)
+        run: |
+          echo "COMMIT_SHA=$(git rev-parse HEAD)" >> $GITHUB_ENV
+
+      - name: Print hash and commit ID (SHA)
+        run: |
+          echo "SHA256 hash of ${{ env.TARGET_FOLDER }}: $SHA256_HASH"
+          echo "Commit SHA: $COMMIT_SHA"
